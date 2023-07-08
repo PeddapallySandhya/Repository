@@ -1,0 +1,38 @@
+name: Create Snowflake Database
+
+on:
+  push:
+    branches:
+      - main  # Adjust this branch name as needed
+
+jobs:
+  create_database:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up SnowSQL
+        run: |
+          # Install SnowSQL (Snowflake CLI)
+          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.10-linux_x86_64.tar.gz
+          tar -xvf snowsql-1.2.10-linux_x86_64.tar.gz
+          export PATH=$PWD/snowsql:$PATH
+
+ 
+
+      - name: Create Snowflake Database
+        env:
+          SNOWFLAKE_ACCOUNT: wb13532.ap-southeast-1
+          SNOWFLAKE_USER: Sandhya
+          SNOWFLAKE_PASSWORD: Sandhya7@
+          SNOWFLAKE_WAREHOUSE: COMPUTE_WH
+          SNOWFLAKE_DATABASE: demo_db
+        run: |
+          snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USER -p $SNOWFLAKE_PASSWORD -w $SNOWFLAKE_WAREHOUSE \
+          -q "CREATE DATABASE $SNOWFLAKE_DATABASE"
+
+
+
+ 
